@@ -24,7 +24,7 @@ enum a_dux_keymap_layers {
     LAYER_BASE = 0,
     LAYER_FUNCTION,
     LAYER_NAVIGATION,
-    LAYER_POINTER,
+    LAYER_POINTER = 3,
     LAYER_NUMERAL,
     LAYER_SYMBOLS,
 };
