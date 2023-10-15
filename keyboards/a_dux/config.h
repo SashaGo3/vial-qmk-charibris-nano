@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LOCKING_RESYNC_ENABLE
 
 #define MASTER_RIGHT
-#define SPLIT_USB_DETECT
+// #define SPLIT_USB_DETECT
 
 /* Reset. */
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
