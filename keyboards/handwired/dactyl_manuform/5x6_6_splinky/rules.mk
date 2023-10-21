@@ -1,11 +1,8 @@
-VIA_ENABLE = yes
-VIAL_ENABLE = yes
-VIAL_INSECURE = yes
-
 # RP2040-specific options
 ALLOW_WARNINGS = yes
 PICO_INTRINSICS_ENABLED = no # ATM Unsupported by ChibiOS.
-CONVERT_TO=promicro_rp2040
+
+# CONVERT_TO=promicro_rp2040
 
 # Build Options
 #   change yes to no to disable
