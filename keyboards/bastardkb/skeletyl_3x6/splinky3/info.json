@@ -1,0 +1,24 @@
+{
+    "keyboard_name": "Skeletyl Splinky",
+    "usb": {
+        "device_version": "2.0.0",
+        "pid": "0x1830"
+    },
+    "split": {
+        "soft_serial_pin": "GP1"
+    },
+    "rgb_matrix": {
+        "driver": "ws2812"
+    },
+    "WS2812": {
+        "pin": "GP0",
+        "driver": "vendor"
+    },
+    "diode_direction": "ROW2COL",
+    "processor": "RP2040",
+    "bootloader": "rp2040",
+    "matrix_pins": {
+        "cols": ["GP27", "GP28", "GP21", "GP6", "GP7", "GP8"],
+        "rows": ["GP29", "GP26", "GP5", "GP4"]
+    }
+}
