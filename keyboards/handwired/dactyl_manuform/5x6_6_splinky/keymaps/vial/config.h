@@ -1,0 +1,29 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+
+#pragma once
+
+#define VIAL_KEYBOARD_UID {0x3E, 0x80, 0xCD, 0x84, 0x87, 0xEF, 0x7D, 0xA8}
+#define DYNAMIC_KEYMAP_LAYER_COUNT 4
+#undef  DIODE_DIRECTION
+#define DIODE_DIRECTION COL2ROW
+
+/* #undef MATRIX_COL_PINS
+#define MATRIX_COL_PINS { GP4, GP5, GP6, GP7, GP8, GP9 }
+#undef MATRIX_ROW_PINS
+#define MATRIX_ROW_PINS { GP27, GP26, GP22, GP20, GP23, GP21 }
+#undef SOFT_SERIAL_PIN
+#define SOFT_SERIAL_PIN GP3 */
+
+/* Handedness. */
+#define MASTER_LEFT
+// #define SPLIT_USB_DETECT
+
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 1000U
+
+/* VBUS detection. */
+#define USB_VBUS_PIN GP19
+
+/* CRC. */
+#define CRC8_USE_TABLE
+#define CRC8_OPTIMIZE_SPEED
