@@ -16,9 +16,6 @@
  */
 #include QMK_KEYBOARD_H
 
-#ifdef A_DUX_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-#    include "timer.h"
-#endif // A_DUX_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
 enum a_dux_keymap_layers {
     LAYER_BASE = 0,
@@ -29,20 +26,7 @@ enum a_dux_keymap_layers {
     LAYER_SYMBOLS,
 };
 
-// Automatically enable sniping-mode on the pointer layer.
-#define A_DUX_AUTO_SNIPING_ON_LAYER LAYER_POINTER
 
-#ifdef A_DUX_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-static uint16_t auto_pointer_layer_timer = 0;
-
-#    ifndef A_DUX_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS
-#        define A_DUX_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS 1000
-#    endif // A_DUX_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS
-
-#    ifndef A_DUX_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
-#        define A_DUX_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD 8
-#    endif // A_DUX_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
-#endif     // A_DUX_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
 #define SPC_NAV LT(LAYER_NAVIGATION, KC_SPC)
 #define TAB_FUN LT(LAYER_FUNCTION, KC_TAB)
@@ -50,12 +34,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
-#ifndef POINTING_DEVICE_ENABLE
-#    define DRGSCRL KC_NO
-#    define DPI_MOD KC_NO
-#    define S_D_MOD KC_NO
-#    define SNIPING KC_NO
-#endif // !POINTING_DEVICE_ENABLE
+
 
 // clang-format off
 /** \brief QWERTY layout (3 rows, 10 columns). */
@@ -96,9 +75,9 @@ static uint16_t auto_pointer_layer_timer = 0;
 
 /** \brief Mouse emulation and pointer functions. */
 #define LAYOUT_LAYER_POINTER                                                                  \
-    QK_BOOT, QK_CLEAR_EEPROM, XXXXXXX, DPI_MOD, S_D_MOD, S_D_MOD, DPI_MOD, XXXXXXX, QK_CLEAR_EEPROM, QK_BOOT, \
+    QK_BOOT, QK_CLEAR_EEPROM, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_CLEAR_EEPROM, QK_BOOT, \
     ______________HOME_ROW_GACS_L______________, ______________HOME_ROW_GACS_R______________, \
-    _______, DRGSCRL, SNIPING, KC_BTN3, XXXXXXX, XXXXXXX, KC_BTN3, SNIPING, DRGSCRL, _______, \
+    _______, XXXXXXX, XXXXXXX, KC_BTN3, XXXXXXX, XXXXXXX, KC_BTN3, XXXXXXX, XXXXXXX, _______, \
                                KC_BTN2, KC_BTN1, KC_BTN1, KC_BTN2
 
 /**
@@ -199,31 +178,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_SYMBOLS] = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
 };
 // clang-format on
-
-#ifdef POINTING_DEVICE_ENABLE
-#    ifdef A_DUX_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-    if (abs(mouse_report.x) > A_DUX_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD || abs(mouse_report.y) > A_DUX_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD) {
-        if (auto_pointer_layer_timer == 0) {
-            layer_on(LAYER_POINTER);
-        }
-        auto_pointer_layer_timer = timer_read();
-    }
-    return mouse_report;
-}
-
-void matrix_scan_user(void) {
-    if (auto_pointer_layer_timer != 0 && TIMER_DIFF_16(timer_read(), auto_pointer_layer_timer) >= A_DUX_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS) {
-        auto_pointer_layer_timer = 0;
-        layer_off(LAYER_POINTER);
-    }
-}
-#    endif // A_DUX_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-
-#    ifdef A_DUX_AUTO_SNIPING_ON_LAYER
-layer_state_t layer_state_set_user(layer_state_t state) {
-    a_dux_set_pointer_sniping_enabled(layer_state_cmp(state, A_DUX_AUTO_SNIPING_ON_LAYER));
-    return state;
-}
-#    endif // A_DUX_AUTO_SNIPING_ON_LAYER
-#endif     // POINTING_DEVICE_ENABLE
