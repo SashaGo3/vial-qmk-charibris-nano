@@ -47,8 +47,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Cirque trackpad over SPI. */
 #define SPI_SCK_PIN GP14
-#define SPI_MOSI_PIN GP15
-#define SPI_MISO_PIN GP12
+#define SPI_MOSI_PIN GP12
+#define SPI_MISO_PIN GP15
 #define POINTING_DEVICE_CS_PIN GP13
 
 
