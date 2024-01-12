@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define POINTING_DEVICE_GESTURES_SCROLL_ENABLE
 #define CIRQUE_PINNACLE_ADDR 0x2A
 #define CIRQUE_PINNACLE_TIMEOUT 60
-#define CIRQUE_PINNACLE_ATTENUATION EXTREG__TRACK_ADCCONFIG__ADC_ATTENUATE_1X
+#define CIRQUE_PINNACLE_ATTENUATION EXTREG__TRACK_ADCCONFIG__ADC_ATTENUATE_3X
 
 //#define I2C_DRIVER I2CD1
 //#define I2C1_SDA_PIN GP14
@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define I2C1_SCL_PAL_MODE 4
 
 /* Cirque trackpad over SPI. */
-#define SPI_DRIVER SPID1
+#define SPI_DRIVER SPID1//
 #define SPI_SCK_PIN GP14
 #define SPI_MOSI_PIN GP15
 #define SPI_MISO_PIN GP12
