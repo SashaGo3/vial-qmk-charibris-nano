@@ -64,3 +64,8 @@
 #define CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 // #define CHARYBDIS_MINIMUM_DEFAULT_DPI 800
 // #define CHARYBDIS_DEFAULT_DPI_CONFIG_STEP 200
+
+// For home row mods
+// Configure the global tapping term (default: 200ms)
+#define TAPPING_TERM 200
+#define ONESHOT_TIMEOUT 2000

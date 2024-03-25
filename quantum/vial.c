@@ -378,6 +378,8 @@ static void on_dance_finished(tap_dance_state_t *state, void *user_data) {
         case SINGLE_TAP: {
             if (td_entry.on_tap)
                 vial_keycode_down(td_entry.on_tap);
+            else if (td_entry.on_hold)
+                vial_keycode_down(td_entry.on_hold);
             break;
         }
         case SINGLE_HOLD: {
@@ -416,6 +418,10 @@ static void on_dance_finished(tap_dance_state_t *state, void *user_data) {
             if (td_entry.on_tap) {
                 vial_keycode_tap(td_entry.on_tap);
                 vial_keycode_down(td_entry.on_tap);
+            } else if (td_entry.on_double_tap) {
+                vial_keycode_down(td_entry.on_double_tap);
+            } else if (td_entry.on_tap_hold) {
+                vial_keycode_down(td_entry.on_tap_hold);
             }
             break;
         }
@@ -434,6 +440,8 @@ static void on_dance_reset(tap_dance_state_t *state, void *user_data) {
         case SINGLE_TAP: {
             if (td_entry.on_tap)
                 vial_keycode_up(td_entry.on_tap);
+            else if (td_entry.on_hold)
+                vial_keycode_up(td_entry.on_hold);
             break;
         }
         case SINGLE_HOLD: {
@@ -469,6 +477,10 @@ static void on_dance_reset(tap_dance_state_t *state, void *user_data) {
         case DOUBLE_SINGLE_TAP: {
             if (td_entry.on_tap) {
                 vial_keycode_up(td_entry.on_tap);
+            } else if (td_entry.on_double_tap) {
+                vial_keycode_up(td_entry.on_double_tap);
+            } else if (td_entry.on_tap_hold) {
+                vial_keycode_up(td_entry.on_tap_hold);
             }
             break;
         }

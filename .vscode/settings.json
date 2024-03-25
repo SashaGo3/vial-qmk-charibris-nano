@@ -30,5 +30,13 @@
     },
     "clangd.arguments": [
         "--header-insertion=never"
-    ]
+    ],
+    "workbench.colorCustomizations": {
+        "sash.hoverBorder": "#26394d",
+        "statusBar.background": "#15202b",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#26394d",
+        "statusBarItem.remoteBackground": "#15202b",
+        "statusBarItem.remoteForeground": "#e7e7e7"
+    }
 }

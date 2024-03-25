@@ -45,11 +45,14 @@ static uint16_t auto_pointer_layer_timer = 0;
 #    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
 #endif     // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
+
+#define SHIFT_ST OSM(MOD_LSFT)
+
 #define ESC_MED LT(LAYER_MEDIA, KC_ESC)
-#define SPC_NAV LT(LAYER_NAVIGATION, KC_SPC)
+#define SPC_NAV LT(LAYER_SYMBOLS, KC_SPC)
 #define TAB_FUN LT(LAYER_FUNCTION, KC_TAB)
-#define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
-#define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
+#define SHFT_SYM LT(LAYER_NUMERAL, SHIFT_ST)
+#define BSP_NUM LT(LAYER_NAVIGATION, KC_BSPC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
 #ifndef POINTING_DEVICE_ENABLE
@@ -65,12 +68,12 @@ static uint16_t auto_pointer_layer_timer = 0;
        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, \
        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L, KC_QUOT, \
        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, \
-                      ESC_MED, SPC_NAV, TAB_FUN, ENT_SYM, BSP_NUM
+                      ESC_MED, BSP_NUM, TAB_FUN, SPC_NAV, SHFT_SYM
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-#define ______________HOME_ROW_GACS_L______________ KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX
-#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI
+#define ______________HOME_ROW_GACS_L______________ KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI, XXXXXXX
+#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LGUI, KC_LALT, KC_LALT, KC_LSFT
 
 /*
  * Layers used on the Charybdis Nano.
@@ -90,11 +93,12 @@ static uint16_t auto_pointer_layer_timer = 0;
  * column. App is on the tertiary thumb key and other thumb keys are duplicated
  * from the base layer to enable auto-repeat.
  */
+#define SHIFT_ENTER LSFT(KC_ENT)
 #define LAYOUT_LAYER_FUNCTION                                                                 \
     _______________DEAD_HALF_ROW_______________, KC_PSCR,   KC_F7,   KC_F8,   KC_F9,  KC_F12, \
     ______________HOME_ROW_GACS_L______________, KC_SCRL,   KC_F4,   KC_F5,   KC_F6,  KC_F11, \
     _______________DEAD_HALF_ROW_______________, KC_PAUS,   KC_F1,   KC_F2,   KC_F3,  KC_F10, \
-                      XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX
+                      XXXXXXX, XXXXXXX, _______, SHIFT_ENTER, KC_ENT
 
 /**
  * \brief Media layer.
@@ -123,11 +127,13 @@ static uint16_t auto_pointer_layer_timer = 0;
  * caps lock and insert on the inner column. Thumb keys are duplicated from the
  * base layer to avoid having to layer change mid edit and to enable auto-repeat.
  */
+# define COPY_ LGUI(KC_C)
+# define PASTE_ LGUI(KC_V)
 #define LAYOUT_LAYER_NAVIGATION                                                               \
     _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
-    ______________HOME_ROW_GACS_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
+    ______________HOME_ROW_GACS_L______________,  KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_CAPS,  \
     _______________DEAD_HALF_ROW_______________,  KC_INS, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
-                      XXXXXXX, _______, XXXXXXX,  KC_ENT, KC_BSPC
+                      XXXXXXX, _______, XXXXXXX,  COPY_, PASTE_
 
 /**
  * \brief Numeral layout.
@@ -165,16 +171,20 @@ static uint16_t auto_pointer_layer_timer = 0;
  *
  *     HOME_ROW_MOD_GACS(LAYER_ALPHAS_QWERTY)
  */
+
+
 #define _HOME_ROW_MOD_GACS(                                            \
     L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
     L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
     ...)                                                               \
              L00,         L01,         L02,         L03,         L04,  \
              R05,         R06,         R07,         R08,         R09,  \
-      LGUI_T(L10), LALT_T(L11), LCTL_T(L12), LSFT_T(L13),        L14,  \
-             R15,  RSFT_T(R16), RCTL_T(R17), LALT_T(R18), RGUI_T(R19), \
+      L10, L11, L12, L13,        L14,  \
+             R15,  R16, R17, R18, R19, \
       __VA_ARGS__
 #define HOME_ROW_MOD_GACS(...) _HOME_ROW_MOD_GACS(__VA_ARGS__)
+
+
 
 /**
  * \brief Add pointer layer keys to a layout.
@@ -256,14 +266,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 void rgb_matrix_update_pwm_buffers(void);
 #endif
 
-void shutdown_user(void) {
-#ifdef RGBLIGHT_ENABLE
-    rgblight_enable_noeeprom();
-    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_setrgb(RGB_RED);
-#endif // RGBLIGHT_ENABLE
-#ifdef RGB_MATRIX_ENABLE
-    rgb_matrix_set_color_all(RGB_RED);
-    rgb_matrix_update_pwm_buffers();
-#endif // RGB_MATRIX_ENABLE
-}
+// void shutdown_user(void) {
+// #ifdef RGBLIGHT_ENABLE
+//     rgblight_enable_noeeprom();
+//     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+//     rgblight_setrgb(RGB_RED);
+// #endif // RGBLIGHT_ENABLE
+// #ifdef RGB_MATRIX_ENABLE
+//     rgb_matrix_set_color_all(RGB_RED);
+//     rgb_matrix_update_pwm_buffers();
+// #endif // RGB_MATRIX_ENABLE
+// }
